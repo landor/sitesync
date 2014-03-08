@@ -1,0 +1,41 @@
+<?php
+$aliases['example'] = array(
+  // always specify
+  'local_path' => '/path/to/local/files/',
+  // specify remote_path as an ssh uri
+  'remote_path' => 'user@host:/path/to/remote/files/',
+
+  // filesync specific
+  'rsync-excludes' => array(
+    // exclude these patterns both ways
+    'some-rsync-exclude-pattern',
+  ),
+  'to-rsync-excludes' => array(
+    // also exclude these patterns when syncing to
+    'some-rsync-exclude-pattern',
+  ),
+  'from-rsync-excludes' => array(
+    // also exclude these patterns when syncing from
+    'some-rsync-exclude-pattern',
+  ),
+
+  // dbsync specific
+  'local_db' => array(
+    'host' => 'localhost',
+    'user' => 'local_username',
+    'pass' => 'local_password',
+    'database' => 'local_db_name',
+  ),
+  'remote_db' => array(
+    'host' => 'remote_host',
+    'user' => 'remote_username',
+    'pass' => 'remote_password',
+    'database' => 'remote_db_name',
+  ),
+  'dbsync_ignore_tables' => array(
+    // exclude these tables
+    'table_to_exclude',
+  ),
+  // a writable directory on remote for tmp sql file
+  'remote_tmp_path' => '/path/to/tmp/on/remote/',
+);
