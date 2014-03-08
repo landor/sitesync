@@ -244,15 +244,15 @@ notdry      The default operation is a dry run. This will make it wet.
     $rsync_excludes =& $args['rsync_excludes'];
     $rsync_excludes = array();
 
-    if (! empty($alias['rsync-excludes']) && is_array($alias['rsync-excludes'])) {
-      foreach ($alias['rsync-excludes'] as $exclude) {
+    if (! empty($alias['rsync_excludes']) && is_array($alias['rsync_excludes'])) {
+      foreach ($alias['rsync_excludes'] as $exclude) {
         $rsync_excludes[] = '--exclude="' . $exclude . '"';
       }
     }
 
     // direction specific excludes
-    if (! empty($alias[$args['direction'] . '-rsync-excludes']) && is_array($alias[$args['direction'] . '-rsync-excludes'])) {
-      foreach ($alias[$args['direction'] . '-rsync-excludes'] as $exclude) {
+    if (! empty($alias[$args['direction'] . '_rsync_excludes']) && is_array($alias[$args['direction'] . '_rsync_excludes'])) {
+      foreach ($alias[$args['direction'] . '_rsync_excludes'] as $exclude) {
         $rsync_excludes[] = '--exclude="' . $exclude . '"';
       }
     }

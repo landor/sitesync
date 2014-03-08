@@ -6,15 +6,15 @@ $aliases['example'] = array(
   'remote_path' => 'user@host:/path/to/remote/files/',
 
   // filesync specific
-  'rsync-excludes' => array(
+  'rsync_excludes' => array(
     // exclude these patterns both ways
     'some-rsync-exclude-pattern',
   ),
-  'to-rsync-excludes' => array(
+  'to_rsync_excludes' => array(
     // also exclude these patterns when syncing to
     'some-rsync-exclude-pattern',
   ),
-  'from-rsync-excludes' => array(
+  'from_rsync_excludes' => array(
     // also exclude these patterns when syncing from
     'some-rsync-exclude-pattern',
   ),
