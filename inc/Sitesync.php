@@ -287,7 +287,7 @@ notdry      The default operation is a dry run. This will make it wet.
     $to_db =& $alias[$args['to_db_key']];
     static::makeIgnoreTables($from_db['database']);
 
-    $tmpfname = tempnam($_SERVER['PWD'], 'dbsync-');
+    $tmpfname = tempnam(getcwd(), 'dbsync-');
     unlink($tmpfname);
     $tmpfbasename = basename($tmpfname);
 
@@ -317,18 +317,38 @@ notdry      The default operation is a dry run. This will make it wet.
     }
 
     // export sql structure on local side
-    $cmd = 'mysqldump --no-data --host=' . $from_db['host'] . ' --user=' . $from_db['user'] . ' --password=' . $from_db['pass'] . ' ' . $from_db['database'] . ' > ' . $from_filename;
+    $cmd = array(
+      'mysqldump --no-data',
+      '--host=' . $from_db['host'],
+      '--user=' . $from_db['user'],
+      '--password=' . $from_db['pass'],
+      );
+    if (! empty($from_db['port'])) {
+      $cmd[] = '--protocol=TCP --port=' . $from_db['port'];
+    }
+    $cmd[] = $from_db['database'];
+    $cmd[] = '> ' . $from_filename;
     static::runcmd(array(
-      'cmd' => $cmd,
+      'cmd' => implode(' ', $cmd),
       'local' => $is_from_local,
       'output_command' => true,
       'use_passthru' => true,
       'honor_dryrun' => true,
     ));
     // export sql data on local side
-    $cmd = 'mysqldump' . $args['ignore_tables'] . ' --host=' . $from_db['host'] . ' --user=' . $from_db['user'] . ' --password=' . $from_db['pass'] . ' ' . $from_db['database'] . ' >> ' . $from_filename;
+    $cmd = array(
+      'mysqldump' . $args['ignore_tables'],
+      '--host=' . $from_db['host'],
+      '--user=' . $from_db['user'],
+      '--password=' . $from_db['pass'],
+      );
+    if (! empty($from_db['port'])) {
+      $cmd[] = '--protocol=TCP --port=' . $from_db['port'];
+    }
+    $cmd[] = $from_db['database'];
+    $cmd[] = '>> ' . $from_filename;
     static::runcmd(array(
-      'cmd' => $cmd,
+      'cmd' => implode(' ', $cmd),
       'local' => $is_from_local,
       'output_command' => true,
       'use_passthru' => true,
@@ -382,9 +402,18 @@ notdry      The default operation is a dry run. This will make it wet.
     }
     
     // import remote sql file
-    $cmd = 'mysql --host=' . $to_db['host'] . ' --user=' . $to_db['user'] . ' --password=' . $to_db['pass'] . ' ' . $to_db['database'] . ' < ' . $to_filename;
+    $cmd = array(
+      'mysql',
+      '--host=' . $to_db['host'],
+      '--user=' . $to_db['user'],
+      '--password=' . $to_db['pass'],
+      );
+    if (! empty($to_db['port'])) {
+      $cmd[] = '--protocol=TCP --port=' . $to_db['port'];
+    }
+    $cmd[] = $to_db['database'] . ' < ' . $to_filename;
     static::runcmd(array(
-      'cmd' => $cmd,
+      'cmd' => implode(' ', $cmd),
       'local' => ! $is_from_local,
       'output_command' => true,
       'use_passthru' => true,
