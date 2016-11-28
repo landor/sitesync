@@ -391,7 +391,7 @@ notdry      The default operation is a dry run. This will make it wet.
       ));
 
       // decompress sql file on remote
-      $cmd = 'bunzip2 -f ' . $to_filename . '.bz2';
+      $cmd = 'bunzip2 -f "' . $to_filename . '.bz2"';
       static::runcmd(array(
         'cmd' => $cmd,
         'local' => ! $is_from_local,
@@ -411,7 +411,7 @@ notdry      The default operation is a dry run. This will make it wet.
     if (! empty($to_db['port'])) {
       $cmd[] = '--protocol=TCP --port=' . $to_db['port'];
     }
-    $cmd[] = $to_db['database'] . ' < ' . $to_filename;
+    $cmd[] = $to_db['database'] . ' < "' . $to_filename . '"';
     static::runcmd(array(
       'cmd' => implode(' ', $cmd),
       'local' => ! $is_from_local,
@@ -421,7 +421,7 @@ notdry      The default operation is a dry run. This will make it wet.
     ));
 
     // delete remote sql file
-    $cmd = 'rm ' . $to_filename;
+    $cmd = 'rm "' . $to_filename . '"';
     static::runcmd(array(
       'cmd' => $cmd,
       'local' => ! $is_from_local,
@@ -564,7 +564,7 @@ notdry      The default operation is a dry run. This will make it wet.
 
     $params['src_file'] = static::addCredentialsToFile($params['src_file'], $params['src_local']);
     $params['dest_file'] = static::addCredentialsToFile($params['dest_file'], $params['dest_local']);
-    $cmd = 'scp ' . $params['src_file'] . ' ' . $params['dest_file'];
+    $cmd = 'scp "' . $params['src_file'] . '" "' . $params['dest_file'] . '"';
 
     if ($params['src_file'] == $params['dest_file'] && ! strpos($cmd, '@')) {
       // no need to copy locally over itself
