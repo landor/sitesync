@@ -321,7 +321,7 @@ notdry      The default operation is a dry run. This will make it wet.
       'mysqldump --no-data',
       '--host=' . $from_db['host'],
       '--user=' . $from_db['user'],
-      '--password=' . $from_db['pass'],
+      '--password=\'' . static::escapePassword($from_db['pass']) . '\'',
       );
     if (! empty($from_db['port'])) {
       $cmd[] = '--protocol=TCP --port=' . $from_db['port'];
@@ -340,7 +340,7 @@ notdry      The default operation is a dry run. This will make it wet.
       'mysqldump' . $args['ignore_tables'],
       '--host=' . $from_db['host'],
       '--user=' . $from_db['user'],
-      '--password=' . $from_db['pass'],
+      '--password=\'' . static::escapePassword($from_db['pass']) . '\'',
       );
     if (! empty($from_db['port'])) {
       $cmd[] = '--protocol=TCP --port=' . $from_db['port'];
@@ -406,7 +406,7 @@ notdry      The default operation is a dry run. This will make it wet.
       'mysql',
       '--host=' . $to_db['host'],
       '--user=' . $to_db['user'],
-      '--password=' . $to_db['pass'],
+      '--password=\'' . static::escapePassword($to_db['pass']) . '\'',
       );
     if (! empty($to_db['port'])) {
       $cmd[] = '--protocol=TCP --port=' . $to_db['port'];
@@ -645,6 +645,14 @@ notdry      The default operation is a dry run. This will make it wet.
       $notify_cmd .= ' -t 1000 --hint=string:x-canonical-private-synchronous: --hint=int:transient:1 -i /usr/share/pixmaps/gnome-term.png "' . $title . '" "' . $msg . '"';
       exec($notify_cmd);
     }
+  }
+
+  /**
+   * escape password for mysql over ssh
+   */
+  protected static function escapePassword($password) {
+    $password = str_replace('$', '\$', $password);
+    return $password;
   }
 
 }
